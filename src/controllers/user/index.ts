@@ -1,6 +1,8 @@
+import { notification } from 'ant-design-vue';
 import ApiClient from '@/library/ApiClient';
 import Store from './store';
 import GettersSetters from './getters_setters';
+import router from '@/router';
 
 class UserController extends GettersSetters {
   store = Store;
@@ -44,6 +46,10 @@ class UserController extends GettersSetters {
   async logout() {
     try {
       await new ApiClient().post('identity/logout');
+      notification.success({
+        message: 'Đăng xuất thành công',
+        description: '',
+      });
     } catch (error) {
       return error;
     } finally {
@@ -68,6 +74,9 @@ class UserController extends GettersSetters {
     this.email = null;
     this.state = null;
     this.role = null;
+    if (router.currentRoute.path !== '/') {
+      router.push('/');
+    }
   }
 
   auth_success(full_name: string, email: string, state: UserState, role: UserRole) {
@@ -75,6 +84,13 @@ class UserController extends GettersSetters {
     this.email = email;
     this.state = state;
     this.role = role;
+    if (router.currentRoute.path !== '/') {
+      router.push('/');
+    }
+    notification.success({
+      message: 'Đăng nhập thành công',
+      description: '',
+    });
   }
 }
 

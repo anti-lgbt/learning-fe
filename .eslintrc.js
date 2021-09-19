@@ -31,5 +31,6 @@ module.exports = {
     'no-shadow': 'off',
     'import/prefer-default-export': 'off',
     'arrow-body-style': 'off',
+    'import/no-cycle': 'off',
   },
 };

@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { notification } from 'ant-design-vue';
 import config from '@/config';
 
 export const jsonToParam = (json: any, first_str = '?') => {
@@ -15,9 +16,15 @@ const sleep = async (ms: number) => {
   await new Promise<void>((resolve) => setTimeout(() => resolve(), ms));
 };
 
-const formatError = async (error: any) => {
-  const { response } = error;
-  const { errors } = response.data;
+const formatError = async (e: any) => {
+  const { response } = e;
+  const { error } = response.data;
+
+  if (response.status !== 401) {
+    notification.error({
+      message: error,
+    } as any);
+  }
 
   sleep(10);
 };
