@@ -2,14 +2,17 @@
   <a-layout-header class="header">
     <div class="container">
       <div class="header-content">
-        <div class="header-logo">
+        <router-link to="/" class="header-logo">
           <img src="@/assets/logo.png" />
-        </div>
+        </router-link>
+        <form class="header-search" @submit.prevent="search_product">
+          <input v-model="search" type="text" />
+          <button type="submit">TÌM KIẾM</button>
+        </form>
         <div class="header-nav">
-          <a class="header-nav-item">ĐỒNG HỒ</a>
-          <a class="header-nav-item">LẮC TAY</a>
-          <a class="header-nav-item"></a>
-          <a class="header-nav-item">ĐỒNG HỒ</a>
+          <router-link v-for="(type, index) in types" :key="index" :to="`/product-list?type=${type.name}`" class="header-nav-item">
+            {{ type.name.toUpperCase() }}
+          </router-link>
         </div>
       </div>
     </div>
@@ -18,9 +21,31 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import Controller from '@/controllers';
 
 @Component
 export default class Header extends Vue {
+  types = Array<string>();
+  search = '';
+
+  mounted() {
+    this.get_product_types();
+  }
+
+  async get_product_types() {
+    try {
+      const { data } = await Controller.get_product_types();
+      this.types = data;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  search_product() {
+    if (this.search.length === 0) return;
+
+    this.$router.push(`/product-list?name=${this.search}`);
+  }
 }
 </script>
 
@@ -46,6 +71,26 @@ export default class Header extends Vue {
 
     img {
       height: 100%;
+    }
+  }
+
+  &-search {
+    width: 350px;
+    margin: auto 0;
+    display: flex;
+
+    input {
+      height: 35px;
+      line-height: 35px;
+      width: 100%;
+      border: 1px solid rgb(173, 177, 185);
+      padding: 0 12px;
+    }
+
+    button {
+      margin-left: 12px;
+      font-size: 12px;
+      width: 100px;
     }
   }
 

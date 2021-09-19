@@ -29,6 +29,23 @@ export default class App extends Vue {
   min-height: 100vh;
 }
 
+a {
+  color: inherit;
+
+  &:hover {
+    color: inherit;
+    text-decoration: underline;
+  }
+}
+
+button {
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
 .container {
   height: 100%;
   width: 1200px;

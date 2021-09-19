@@ -5,7 +5,11 @@
         {{ title }}
       </div>
       <div class="product-list-content">
-        <ProductItem v-for="(product, index) in products" :key="index" :product="product" />
+        <swiper ref="mySwiper" :options="swiperOptions">
+          <swiper-slide v-for="(product, index) in products" :key="index">
+            <ProductItem :product="product" />
+          </swiper-slide>
+        </swiper>
       </div>
     </div>
   </div>
@@ -22,9 +26,17 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 export default class ProductListSlide extends Vue {
   @Prop() title!: string;
   @Prop() products!: Product[];
+
+  swiperOptions = {
+    slidesPerView: 4,
+  };
 }
 </script>
 
 <style lang="less">
-
+.product-list-slide {
+  .product-item {
+    width: 100%;
+  }
+}
 </style>

@@ -24,5 +24,9 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     'max-len': 'off',
     'lines-between-class-members': 'off',
+    'no-restricted-syntax': 'off',
+    'no-prototype-builtins': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    'consistent-return': 'off',
   },
 };
