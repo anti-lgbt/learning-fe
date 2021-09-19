@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <Banner />
-    <ProductList title="Sản Phẩm Hot" :products="HotProducts" />
-    <ProductList title="Sản Phẩm Giảm Giá" :products="SaleProducts" />
+    <ProductList class="container" title="Sản Phẩm Hot" :products="HotProducts" :loading="LoadingHotProducts" />
+    <ProductList class="container" title="Sản Phẩm Giảm Giá" :products="SaleProducts" :loading="LoadingSaleProducts" />
   </div>
 </template>
 
@@ -19,6 +19,8 @@ import ProductList from '@/components/ProductList.vue';
   },
 })
 export default class Home extends Vue {
+  LoadingHotProducts = false;
+  LoadingSaleProducts = false;
   HotProducts = Array<Product>();
   SaleProducts = Array<Product>();
 
@@ -28,6 +30,7 @@ export default class Home extends Vue {
   }
 
   async get_hot_products() {
+    this.LoadingHotProducts = true;
     try {
       const { data } = await PublicController.get_products({
         order_by: 'view_count',
@@ -39,10 +42,13 @@ export default class Home extends Vue {
       this.HotProducts = data;
     } catch (error) {
       return error;
+    } finally {
+      this.LoadingHotProducts = false;
     }
   }
 
   async get_sale_products() {
+    this.LoadingSaleProducts = true;
     try {
       const { data } = await PublicController.get_products({
         order_by: 'discount_percentage',
@@ -54,6 +60,8 @@ export default class Home extends Vue {
       this.SaleProducts = data;
     } catch (error) {
       return error;
+    } finally {
+      this.LoadingSaleProducts = false;
     }
   }
 }

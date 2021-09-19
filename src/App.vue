@@ -53,7 +53,7 @@ button {
 }
 
 .product-list {
-  margin: 30px 0;
+  margin: 30px auto;
 
   &-title {
     font-size: 36px;

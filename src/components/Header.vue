@@ -6,12 +6,12 @@
           <img src="@/assets/logo.png" />
         </router-link>
         <form class="header-search" @submit.prevent="search_product">
-          <input v-model="search" type="text" />
-          <button type="submit">TÌM KIẾM</button>
+          <a-input v-model="search" type="text" />
+          <a-button type="submit" :disabled="!search">TÌM KIẾM</a-button>
         </form>
         <div class="header-nav">
-          <router-link v-for="(type, index) in types" :key="index" :to="`/product-list?type=${type.name}`" class="header-nav-item">
-            {{ type.name.toUpperCase() }}
+          <router-link to="/product-list" class="header-nav-item">
+            DANH MỤC
           </router-link>
 
           <template v-if="UserController.state != 'active'">
@@ -50,21 +50,7 @@ import { UserController } from '@/controllers';
 
 @Component
 export default class Header extends Vue {
-  types = Array<string>();
   search = '';
-
-  mounted() {
-    this.get_product_types();
-  }
-
-  async get_product_types() {
-    try {
-      const { data } = await PublicController.get_product_types();
-      this.types = data;
-    } catch (error) {
-      return error;
-    }
-  }
 
   search_product() {
     if (this.search.length === 0) return;
@@ -107,12 +93,11 @@ export default class Header extends Vue {
     width: 350px;
     margin: auto 0;
     display: flex;
+    align-items: center;
 
     input {
       height: 35px;
       line-height: 35px;
-      width: 100%;
-      border: 1px solid rgb(173, 177, 185);
       padding: 0 12px;
     }
 

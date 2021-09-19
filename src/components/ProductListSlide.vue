@@ -1,16 +1,14 @@
 <template>
   <div class="product-list product-list-slide">
-    <div class="container">
-      <div class="product-list-title">
-        {{ title }}
-      </div>
-      <div class="product-list-content">
-        <swiper ref="mySwiper" :options="swiperOptions">
-          <swiper-slide v-for="(product, index) in products" :key="index">
-            <ProductItem :product="product" />
-          </swiper-slide>
-        </swiper>
-      </div>
+    <div class="product-list-title">
+      {{ title }}
+    </div>
+    <div class="product-list-content">
+      <swiper ref="mySwiper" :options="swiperOptions">
+        <swiper-slide v-for="(product, index) in products" :key="index">
+          <ProductItem :product="product" />
+        </swiper-slide>
+      </swiper>
     </div>
   </div>
 </template>

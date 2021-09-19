@@ -1,24 +1,28 @@
 <template>
-  <div class="product-list-page">
-    <ProductList :title="title" :products="products" />
+  <div class="product-list-page container">
+    <Category />
+    <ProductList :title="title" :products="products" :loading="loading" />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import ProductList from '@/components/ProductList.vue';
+import Category from '@/layouts/ProductList/Category.vue';
 import PublicController from '@/controllers/public';
 
 @Component({
   components: {
     ProductList,
+    Category,
   },
 })
 export default class ProductListPage extends Vue {
+  loading = false;
   products = Array<Product>();
 
   get title() {
-    return this.type?.length ? this.type : `Kết quả tìm kiếm của: ${this.name}`;
+    return this.type?.length ? this.type : 'Kết quả';
   }
 
   get type() {
@@ -34,6 +38,7 @@ export default class ProductListPage extends Vue {
   }
 
   async get_products() {
+    this.loading = true;
     let payload = {
       limit: 25,
       page: 1,
@@ -52,6 +57,8 @@ export default class ProductListPage extends Vue {
       this.products = data;
     } catch (error) {
       return error;
+    } finally {
+      this.loading = false;
     }
   }
 
@@ -66,5 +73,19 @@ export default class ProductListPage extends Vue {
 </script>
 
 <style lang="less">
+.product-list-page {
+  display: flex;
 
+  .category {
+    width: 250px;
+  }
+
+  .product-list {
+    width: calc(100% - 250px);
+
+    .product-item {
+      width: 33.3333333%;
+    }
+  }
+}
 </style>
