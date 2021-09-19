@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Controller from '@/controllers';
+import PublicController from '@/controllers/public';
 import Banner from '@/layouts/Home/Banner.vue';
 import ProductList from '@/components/ProductList.vue';
 
@@ -29,7 +29,7 @@ export default class Home extends Vue {
 
   async get_hot_products() {
     try {
-      const { data } = await Controller.get_products({
+      const { data } = await PublicController.get_products({
         order_by: 'view_count',
         ordering: 'desc',
         special: true,
@@ -44,7 +44,7 @@ export default class Home extends Vue {
 
   async get_sale_products() {
     try {
-      const { data } = await Controller.get_products({
+      const { data } = await PublicController.get_products({
         order_by: 'discount_percentage',
         ordering: 'desc',
         discounting: true,

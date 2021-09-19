@@ -25,7 +25,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import ProductListSlide from '@/components/ProductListSlide.vue';
-import Controller from '@/controllers';
+import PublicController from '@/controllers/public';
 
 @Component({
   components: {
@@ -62,7 +62,7 @@ export default class ProductInfo extends Vue {
   async get_product() {
     this.loading = true;
     try {
-      const { data } = await Controller.get_product(this.product_id);
+      const { data } = await PublicController.get_product(this.product_id);
       this.product = data;
     } catch (error) {
       return error;
@@ -73,7 +73,7 @@ export default class ProductInfo extends Vue {
 
   async get_same_product() {
     try {
-      const { data } = await Controller.get_products({
+      const { data } = await PublicController.get_products({
         type: this.product?.type,
       });
       this.same_products = data;

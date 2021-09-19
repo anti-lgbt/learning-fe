@@ -7,7 +7,7 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import ProductList from '@/components/ProductList.vue';
-import Controller from '@/controllers';
+import PublicController from '@/controllers/public';
 
 @Component({
   components: {
@@ -48,7 +48,7 @@ export default class ProductListPage extends Vue {
     }
 
     try {
-      const { data } = await Controller.get_products(payload);
+      const { data } = await PublicController.get_products(payload);
       this.products = data;
     } catch (error) {
       return error;

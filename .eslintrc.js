@@ -28,5 +28,8 @@ module.exports = {
     'no-prototype-builtins': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'consistent-return': 'off',
+    'no-shadow': 'off',
+    'import/prefer-default-export': 'off',
+    'arrow-body-style': 'off',
   },
 };

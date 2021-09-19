@@ -1,13 +1,13 @@
-type UserStateActive = 'active';
-type UserStatePending = 'pending';
-type UserStateDeleted = 'deleted';
+enum UserState {
+  Loading = 'loading',
+  Active = 'active',
+  Deleted = 'deleted',
+}
 
-type UserState = UserStateActive | UserStatePending | UserStateDeleted;
-
-type UserRoleAdmin = 'admin';
-type UserRoleMember = 'member';
-
-type UserRole = UserRoleAdmin | UserRoleMember;
+enum UserRole {
+  Admin = 'admin',
+  Member = 'member',
+}
 
 interface Product {
   id: number;

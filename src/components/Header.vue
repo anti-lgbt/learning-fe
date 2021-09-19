@@ -13,6 +13,30 @@
           <router-link v-for="(type, index) in types" :key="index" :to="`/product-list?type=${type.name}`" class="header-nav-item">
             {{ type.name.toUpperCase() }}
           </router-link>
+
+          <template v-if="UserController.state != 'active'">
+            <router-link to="/login" class="header-nav-item">
+              <a-button>Đăng nhập</a-button>
+            </router-link>
+
+            <router-link to="/register" class="header-nav-item">
+              <a-button>Đăng ký</a-button>
+            </router-link>
+          </template>
+          <template v-else>
+            <div class="header-nav-item">
+              Xin chào:
+              <router-link to="/profile">
+                {{ UserController.full_name }}
+              </router-link>
+            </div>
+
+            <router-link v-if="UserController.state == 'admin'" to="/admin">
+              Quản trị
+            </router-link>
+
+            <a-icon type="logout" @click="logout" />
+          </template>
         </div>
       </div>
     </div>
@@ -21,7 +45,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Controller from '@/controllers';
+import PublicController from '@/controllers/public';
+import { UserController } from '@/controllers';
 
 @Component
 export default class Header extends Vue {
@@ -34,7 +59,7 @@ export default class Header extends Vue {
 
   async get_product_types() {
     try {
-      const { data } = await Controller.get_product_types();
+      const { data } = await PublicController.get_product_types();
       this.types = data;
     } catch (error) {
       return error;
@@ -45,6 +70,10 @@ export default class Header extends Vue {
     if (this.search.length === 0) return;
 
     this.$router.push(`/product-list?name=${this.search}`);
+  }
+
+  logout() {
+    UserController.logout();
   }
 }
 </script>
@@ -102,11 +131,6 @@ export default class Header extends Vue {
       color: rgb(34, 41, 58);
       margin: 0 12px;
       font-size: 16px;
-
-      &:hover {
-        color: rgb(34, 41, 58);
-        text-decoration: underline;
-      }
     }
   }
 }
