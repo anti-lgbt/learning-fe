@@ -17,6 +17,43 @@
     </div>
 
     <div class="container">
+      <div class="product-info-comment">
+        <div class="product-info-comment-title">
+          Bình luận về sản phẩm
+        </div>
+
+        <a-empty v-if="comments.length == 0" description="Sản phẩm chưa có bình luận nào" class="product-info-comment-note" />
+        <a-comment v-for="(comment, index) in comments" :key="index">
+          <a slot="author">{{ comment.full_name }}</a>
+          <a-avatar
+            slot="avatar"
+            src="/api/v2/public/users/avatar?id=1"
+            icon="avatar"
+            :size="50"
+            :alt="comment.full_name"
+          />
+          <p slot="content">{{ comment.content }}</p>
+          <a-tooltip slot="datetime" :title="moment().format('YYYY-MM-DD HH:mm:ss')">
+            <span>{{ moment(comment.created_at).fromNow() }}</span>
+          </a-tooltip>
+        </a-comment>
+
+        <template v-if="UserController.state == 'active'">
+          <a-textarea
+            v-model="input_comment"
+            placeholder="Viết bình luận về sản phẩm"
+            :auto-size="{ minRows: 2, maxRows: 6 }"
+          />
+
+          <a-button type="primary" @click="send_comment">Gửi bình luận</a-button>
+        </template>
+        <div v-else class="product-info-comment-note">
+          Đăng nhập để bình luận về sản phẩm này
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
       <ProductListSlide title="Sản phẩm liên quan" :products="same_products" />
     </div>
   </div>
@@ -24,6 +61,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import moment from 'moment';
 import ProductListSlide from '@/components/ProductListSlide.vue';
 import PublicController from '@/controllers/public';
 
@@ -35,7 +73,9 @@ import PublicController from '@/controllers/public';
 export default class ProductInfo extends Vue {
   loading = false;
   product: Product | null = null;
+  input_comment = '';
 
+  comments = Array<Comment>();
   same_products = Array<Product>();
 
   get product_id() {
@@ -55,6 +95,7 @@ export default class ProductInfo extends Vue {
   }
 
   async mounted() {
+    this.get_comments();
     await this.get_product();
     this.get_same_product();
   }
@@ -71,12 +112,34 @@ export default class ProductInfo extends Vue {
     }
   }
 
+  async get_comments() {
+    (window as any).moment = moment;
+
+    try {
+      const { data } = await PublicController.get_comments(this.product_id);
+      this.comments = data;
+    } catch (error) {
+      return error;
+    }
+  }
+
   async get_same_product() {
     try {
       const { data } = await PublicController.get_products({
         type: this.product?.type,
       });
       this.same_products = data;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async send_comment() {
+    try {
+      const { data } = await PublicController.send_comment(this.product_id, this.input_comment);
+
+      this.comments.push(data);
+      this.input_comment = '';
     } catch (error) {
       return error;
     }
@@ -97,6 +160,43 @@ export default class ProductInfo extends Vue {
 
     img {
       width: 100%;
+    }
+  }
+
+  &-comment {
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    &-title {
+      font-size: 36px;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .ant-comment-inner {
+      padding: 0;
+      margin-bottom: 16px;
+    }
+
+    .ant-comment-content-author > * {
+      font-size: 14px;
+      line-height: 24px
+    }
+
+    .ant-comment-content-detail p {
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 16px;
+    }
+
+    &-note {
+      font-size: 16px;
+      text-align: center;
+      font-weight: 500;
+      color: #007aff;
     }
   }
 

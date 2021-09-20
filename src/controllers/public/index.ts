@@ -12,6 +12,14 @@ class Controller {
   get_product(id: number) {
     return new ApiClient().get(`public/products/${id}`);
   }
+
+  get_comments(product_id: number) {
+    return new ApiClient().get(`public/products/${product_id}/comments`);
+  }
+
+  send_comment(product_id: number, content: string) {
+    return new ApiClient().post(`resource/products/${product_id}/comments`, { content });
+  }
 }
 
 export default new Controller();

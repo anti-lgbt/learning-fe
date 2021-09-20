@@ -39,6 +39,7 @@ interface User {
 interface Comment {
   id: number;
   user_id: number;
+  full_name: string;
   product_id: number;
   content: string;
   created_at: Date;
