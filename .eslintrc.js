@@ -32,5 +32,8 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'arrow-body-style': 'off',
     'import/no-cycle': 'off',
+    'prefer-destructuring': 'off',
+    'no-useless-return': 'off',
+    'no-else-return': 'off',
   },
 };

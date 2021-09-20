@@ -30,16 +30,25 @@ const routes: Array<RouteConfig> = [
     path: '/login',
     name: 'Login',
     component: Login,
+    meta: {
+      guestOnly: true,
+    },
   },
   {
     path: '/register',
     name: 'register',
     component: Register,
+    meta: {
+      guestOnly: true,
+    },
   },
   {
     path: '/profile',
     name: 'Profile',
     component: Profile,
+    meta: {
+      requireAuth: true,
+    },
   },
 ];
 
@@ -58,7 +67,13 @@ router.beforeEach(async (to, from, next) => {
     first_route = false;
   }
 
-  return next();
+  if (to.meta?.guestOnly && UserController.state === 'active') {
+    return next('/');
+  } else if (to.meta?.requireAuth && UserController.state !== 'active') {
+    return next('/login');
+  } else {
+    return next();
+  }
 });
 
 export default router;

@@ -1,3 +1,3 @@
 export default {
-  api_url: '/api/v2',
+  api_url: `${document.location.origin}/api/v2`,
 };

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import {
-  Button, Layout, Input, Form, Icon, Skeleton,
+  Button, Layout, Input, Form, Icon, Skeleton, Avatar, Tabs, Upload,
 } from 'ant-design-vue';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 import App from './App.vue';
@@ -16,6 +16,9 @@ Vue.use(Input);
 Vue.use(Form);
 Vue.use(Icon);
 Vue.use(Skeleton);
+Vue.use(Avatar);
+Vue.use(Tabs);
+Vue.use(Upload);
 Vue.use(VueAwesomeSwiper);
 
 Vue.config.productionTip = false;

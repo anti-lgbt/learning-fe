@@ -66,4 +66,8 @@ button {
     //
   }
 }
+
+.ant-input-error {
+  color: rgb(231, 59, 59);
+}
 </style>
