@@ -27,7 +27,7 @@
           <a slot="author">{{ comment.full_name }}</a>
           <a-avatar
             slot="avatar"
-            src="/api/v2/public/users/avatar?id=1"
+            :src="`/api/v2/public/users/avatar?id=${comment.user_id}`"
             icon="avatar"
             :size="50"
             :alt="comment.full_name"
