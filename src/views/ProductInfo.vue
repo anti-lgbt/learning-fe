@@ -43,9 +43,10 @@
             v-model="input_comment"
             placeholder="Viết bình luận về sản phẩm"
             :auto-size="{ minRows: 2, maxRows: 6 }"
+            :disabled="comment_loading"
           />
 
-          <a-button type="primary" @click="send_comment">Gửi bình luận</a-button>
+          <a-button type="primary" :loading="comment_loading" @click="send_comment">Gửi bình luận</a-button>
         </template>
         <div v-else class="product-info-comment-note">
           Đăng nhập để bình luận về sản phẩm này
@@ -74,6 +75,7 @@ export default class ProductInfo extends Vue {
   loading = false;
   product: Product | null = null;
   input_comment = '';
+  comment_loading = false;
 
   comments = Array<Comment>();
   same_products = Array<Product>();
@@ -135,6 +137,7 @@ export default class ProductInfo extends Vue {
   }
 
   async send_comment() {
+    this.comment_loading = true;
     try {
       const { data } = await PublicController.send_comment(this.product_id, this.input_comment);
 
@@ -142,6 +145,8 @@ export default class ProductInfo extends Vue {
       this.input_comment = '';
     } catch (error) {
       return error;
+    } finally {
+      this.comment_loading = false;
     }
   }
 }
@@ -164,7 +169,7 @@ export default class ProductInfo extends Vue {
   }
 
   &-comment {
-    margin-top: 20px;
+    margin-top: 50px;
     margin-bottom: 20px;
 
     &-title {
