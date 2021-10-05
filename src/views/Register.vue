@@ -1,19 +1,11 @@
 <template>
   <div class="register">
-    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }" @submit.prevent="register">
-      <a-form-item label="Full name">
-        <a-input v-model="full_name" />
-      </a-form-item>
-      <a-form-item label="Email">
-        <a-input v-model="email" />
-      </a-form-item>
-      <a-form-item label="Password">
-        <a-input-password v-model="password" />
-      </a-form-item>
-      <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-        <a-button type="primary" html-type="submit" :loading="UserController.loading">Đăng ký</a-button>
-      </a-form-item>
-    </a-form>
+    <AuthForm title="Đăng ký" @submit.prevent="register">
+      <AuthInput label="Full Name" v-model="full_name" :required="true" />
+      <AuthInput label="Email" v-model="email" :required="true" :error="email_error" />
+      <AuthInput label="Password" type="password" v-model="password" :required="true" :error="password_error" />
+      <a-button type="primary" html-type="submit" :loading="loading">Đăng ký</a-button>
+    </AuthForm>
   </div>
 </template>
 

@@ -14,6 +14,10 @@
             DANH MỤC
           </router-link>
 
+          <router-link v-if="UserController.role == 'admin'" to="/admin/product_types" class="header-nav-item">
+            QUẢN TRỊ
+          </router-link>
+
           <template v-if="UserController.state != 'active'">
             <router-link to="/login" class="header-nav-item">
               <a-button>Đăng nhập</a-button>
@@ -30,10 +34,6 @@
                 {{ UserController.full_name }}
               </router-link>
             </div>
-
-            <router-link v-if="UserController.state == 'admin'" to="/admin">
-              Quản trị
-            </router-link>
 
             <a-icon type="logout" @click="logout" />
           </template>
@@ -116,6 +116,10 @@ export default class Header extends Vue {
       color: rgb(34, 41, 58);
       margin: 0 12px;
       font-size: 16px;
+
+      &.router-link-active {
+        text-decoration: underline;
+      }
     }
   }
 }

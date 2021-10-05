@@ -1,16 +1,10 @@
 <template>
   <div class="login container">
-    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }" @submit.prevent="login">
-      <a-form-item label="Email">
-        <a-input v-model="email" />
-      </a-form-item>
-      <a-form-item label="Password">
-        <a-input-password v-model="password" />
-      </a-form-item>
-      <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-        <a-button type="primary" html-type="submit" :loading="UserController.loading">Đăng nhập</a-button>
-      </a-form-item>
-    </a-form>
+    <AuthForm title="Đăng nhập" @submit.prevent="login">
+      <AuthInput label="Email" v-model="email" :required="true" />
+      <AuthInput v-model="password" label="Password" type="password" :required="true" />
+      <a-button type="primary" html-type="submit" :loading="loading">Đăng nhập</a-button>
+    </AuthForm>
   </div>
 </template>
 

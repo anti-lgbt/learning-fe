@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import {
-  Button, Layout, Input, Form, Icon, Skeleton, Avatar, Tabs, Upload, Comment, Tooltip, Empty,
+  Button, Layout, Input, Form, Icon, Skeleton, Avatar, Tabs, Upload, Comment, Tooltip, Empty, Menu,
 } from 'ant-design-vue';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 import moment from 'moment';
@@ -23,6 +23,7 @@ Vue.use(Upload);
 Vue.use(Comment);
 Vue.use(Tooltip);
 Vue.use(Empty);
+Vue.use(Menu);
 Vue.use(VueAwesomeSwiper);
 
 Vue.config.productionTip = false;

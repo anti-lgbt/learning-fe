@@ -1,12 +1,13 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
+import { UserController } from '@/controllers';
+import Admin from '@/views/Admin.vue';
 import Home from '@/views/Home.vue';
+import Login from '@/views/Login.vue';
 import ProductInfo from '@/views/ProductInfo.vue';
 import ProductList from '@/views/ProductList.vue';
-import Login from '@/views/Login.vue';
-import Register from '@/views/Register.vue';
 import Profile from '@/views/Profile.vue';
-import { UserController } from '@/controllers';
+import Register from '@/views/Register.vue';
 
 Vue.use(VueRouter);
 
@@ -48,6 +49,33 @@ const routes: Array<RouteConfig> = [
     component: Profile,
     meta: {
       requireAuth: true,
+    },
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: Admin,
+    children: [
+      {
+        path: 'product_types',
+        component: () => import('@/views/Admin/ProductTypes.vue'),
+      },
+      {
+        path: 'products',
+        component: () => import('@/views/Admin/Products.vue'),
+      },
+      {
+        path: 'users',
+        component: () => import('@/views/Admin/Users.vue'),
+      },
+      {
+        path: 'stats',
+        component: () => import('@/views/Admin/Stats.vue'),
+      },
+    ],
+    meta: {
+      requireAuth: true,
+      adminOnly: true,
     },
   },
 ];
