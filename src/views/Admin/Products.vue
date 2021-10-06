@@ -2,7 +2,7 @@
   <div class="products">
     <a-table :columns="columns" :data-source="data" :loading="loading">
       <template
-        v-for="col in ['product_type_id', 'name', 'description', 'price', 'discount_percentage', 'stock_left', 'special']"
+        v-for="col in ['product_type_id', 'name', 'price', 'discount_percentage', 'stock_left', 'special']"
         :slot="col"
         slot-scope="text, record"
       >
@@ -12,12 +12,6 @@
               {{ type.name }}
             </a-select-option>
           </a-select>
-          <a-textarea
-            v-else-if="record.editable && col == 'description'"
-            style="margin: -5px 0"
-            :value="text"
-            @change="e => handleChange(e.target.value, record.key, col)"
-          />
           <a-input
             v-else-if="record.editable && col !== 'special'"
             style="margin: -5px 0"
@@ -78,58 +72,36 @@
         </div>
       </template>
 
+      <template slot="expandedRowRender" slot-scope="record">
+        <div style="margin-bottom: 12px; font-size: 16px; font-weight: bold;">Mô tả:</div>
+        <template v-if="record.editable">
+          <a-textarea
+            style="margin: -5px 0"
+            :value="record.description"
+            @change="e => handleChange(e.target.value, record.key, 'description')"
+          />
+        </template>
+        <template v-else>
+          {{ record.description }}
+        </template>
+      </template>
       <template slot="footer">
-        <table class="table-footer ant-table-body">
-          <colgroup><col><col><col><col><col><col><col></colgroup>
-          <tbody class="ant-table-tbody">
-            <tr class="ant-table-row ant-table-row-level-0">
-              <td>
-                NULL
-              </td>
-              <td>
-                <a-select v-model="newProductObj.product_type_id" style="width: 150px">
-                  <a-select-option v-for="type of types" :key="type.id" :value="type.id">
-                    {{ type.name }}
-                  </a-select-option>
-                </a-select>
-              </td>
-              <td>
-                <a-input v-model="newProductObj.name" placeholder="Tên sản phẩm" />
-              </td>
-              <td>
-                <a-input v-model="newProductObj.description" placeholder="Mô tả sản phẩm" />
-              </td>
-              <td>
-                <a-input v-model="newProductObj.price" placeholder="Giá" />
-              </td>
-              <td>
-                <a-input v-model="newProductObj.discount_percentage" placeholder="Giảm %" />
-              </td>
-              <td>
-                <a-checkbox v-model="newProductObj.special" />
-              </td>
-              <td>
-                <a-input v-model.number="newProductObj.stock_left" placeholder="Số lượng" />
-              </td>
-              <td>
-                <div>
-                  <a @click="create_product">Tạo mới</a>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-footer">
+          <a-button type="primary" @click="ModalCreateProduct.showing = true">Tạo mới</a-button>
+        </div>
       </template>
     </a-table>
+    <ModalCreateProduct ref="ModalCreateProduct" :product_types="types" @success="d => data.push(d)" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Ref } from 'vue-property-decorator';
 import { notification } from 'ant-design-vue';
 import { AdminController } from '@/controllers';
 import AdminMixin from './mixins';
 import ApiClient from '@/library/ApiClient';
+import ModalCreateProduct from './ModalCreateProduct.vue';
 
 function getBase64(img: Blob, callback: (data: string) => void) {
   const reader = new FileReader();
@@ -137,8 +109,14 @@ function getBase64(img: Blob, callback: (data: string) => void) {
   reader.readAsDataURL(img);
 }
 
-@Component({})
+@Component({
+  components: {
+    ModalCreateProduct,
+  },
+})
 export default class Products extends Mixins(AdminMixin) {
+  @Ref('ModalCreateProduct') ModalCreateProduct!: ModalCreateProduct;
+
   newProductObj = {};
   imageUrl = '';
   image_loading = false;
@@ -162,12 +140,6 @@ export default class Products extends Mixins(AdminMixin) {
       dataIndex: 'name',
       key: 'name',
       scopedSlots: { customRender: 'name' },
-    },
-    {
-      title: 'Mô tả sản phẩm',
-      dataIndex: 'description',
-      key: 'description',
-      scopedSlots: { customRender: 'description' },
     },
     {
       title: 'Giá',
@@ -295,24 +267,6 @@ export default class Products extends Mixins(AdminMixin) {
     } catch (error) {
       const index = this.data.findIndex((item) => key === item.key);
       if (index >= 0) Object.assign(this.data[index], this.cacheData.find((item) => key === item.key));
-      return error;
-    } finally {
-      this.loading = false;
-    }
-  }
-
-  async create_product() {
-    this.loading = true;
-
-    try {
-      const { data } = await AdminController.create_product(this.newProductObj);
-      this.newProductObj = {};
-      this.data.push(data);
-      notification.success({
-        message: 'Tạo sản phẩm thành công!',
-        description: '',
-      });
-    } catch (error) {
       return error;
     } finally {
       this.loading = false;

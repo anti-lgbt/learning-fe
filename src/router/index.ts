@@ -108,6 +108,8 @@ router.beforeEach(async (to, from, next) => {
     return next('/');
   } else if (to.meta?.requireAuth && UserController.state !== 'active') {
     return next('/login');
+  } else if (to.meta?.adminOnly && UserController.role !== 'admin') {
+    return next(from.path);
   } else {
     return next();
   }

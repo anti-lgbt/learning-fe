@@ -37,39 +37,29 @@
       </template>
 
       <template slot="footer">
-        <table class="table-footer ant-table-body">
-          <colgroup><col><col><col><col><col><col><col></colgroup>
-          <tbody class="ant-table-tbody">
-            <tr class="ant-table-row ant-table-row-level-0">
-              <td>
-                NULL
-              </td>
-              <td>
-                <a-input v-model="newProductTypeObj.name" style="width: 350px" />
-              </td>
-              <td>
-                Hôm nay
-              </td>
-              <td>
-                <a @click.prevent="create_product_type">Tạo mới</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-footer">
+          <a-button type="primary" @click="ModalCreateProductType.showing = true">Tạo mới</a-button>
+        </div>
       </template>
     </a-table>
+    <ModalCreateProductType ref="ModalCreateProductType" @success="d => data.push(d)" />
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Ref } from 'vue-property-decorator';
 import { notification } from 'ant-design-vue';
 import { AdminController } from '@/controllers';
 import AdminMixin from './mixins';
+import ModalCreateProductType from './ModalCreateProductType.vue';
 
-@Component({})
+@Component({
+  components: {
+    ModalCreateProductType,
+  },
+})
 export default class ProductTypes extends Mixins(AdminMixin) {
-  newProductTypeObj = {};
+  @Ref('ModalCreateProductType') ModalCreateProductType!: ModalCreateProductType;
   columns = [
     {
       title: 'ID',
@@ -124,24 +114,6 @@ export default class ProductTypes extends Mixins(AdminMixin) {
     try {
       await AdminController.delete_product_type(this.data[index].id);
       this.data.splice(index, 1);
-    } catch (error) {
-      return error;
-    } finally {
-      this.loading = false;
-    }
-  }
-
-  async create_product_type() {
-    this.loading = true;
-
-    try {
-      const { data } = await AdminController.create_product_type((this.newProductTypeObj as any).name);
-      this.newProductTypeObj = {};
-      this.data.push(data);
-      notification.success({
-        message: 'Tạo loại sản phẩm thành công!',
-        description: '',
-      });
     } catch (error) {
       return error;
     } finally {
