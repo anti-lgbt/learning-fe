@@ -3,7 +3,10 @@
     <AuthForm title="Đăng nhập" @submit.prevent="login">
       <AuthInput label="Email" v-model="email" :required="true" />
       <AuthInput v-model="password" label="Password" type="password" :required="true" />
-      <a-button type="primary" html-type="submit" :loading="loading">Đăng nhập</a-button>
+      <div class="auth-form-footer">
+        <a-button type="primary" html-type="submit" :loading="loading">Đăng nhập</a-button>
+        <router-link to="/forgot_password">Quên mật khẩu?</router-link>
+      </div>
     </AuthForm>
   </div>
 </template>

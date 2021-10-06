@@ -76,6 +76,12 @@ export class AuthMixin extends Vue {
     UserController.register(this.full_name, this.email, this.password);
   }
 
+  forgot_password() {
+    if (this.email.length === 0) return;
+
+    UserController.forgot_password(this.email);
+  }
+
   change_password() {
     if (this.old_password_error) return;
     if (this.new_password_error) return;

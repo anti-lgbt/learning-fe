@@ -28,6 +28,15 @@ export default class Form extends Vue {
     }
   }
 
+  &-footer {
+    display: flex;
+    justify-content: space-between;
+
+    a {
+      color: rgb(82, 144, 238);
+    }
+  }
+
   &-container {
     width: 550px;
     background: #fff;

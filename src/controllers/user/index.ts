@@ -60,6 +60,19 @@ class UserController extends GettersSetters {
     }
   }
 
+  async forgot_password(email: string) {
+    try {
+      await new ApiClient().post('identity/forgot_password', { email });
+      notification.success({
+        message: 'Mật khẩu mới đã được gửi về email',
+        description: '',
+      });
+      router.push('/');
+    } catch (error) {
+      return error;
+    }
+  }
+
   async logout() {
     try {
       await new ApiClient().post('identity/logout');

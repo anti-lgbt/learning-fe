@@ -4,6 +4,7 @@ import { UserController } from '@/controllers';
 import Admin from '@/views/Admin.vue';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
+import ForgotPassword from '@/views/ForgotPassword.vue';
 import ProductInfo from '@/views/ProductInfo.vue';
 import ProductList from '@/views/ProductList.vue';
 import Profile from '@/views/Profile.vue';
@@ -39,6 +40,14 @@ const routes: Array<RouteConfig> = [
     path: '/register',
     name: 'register',
     component: Register,
+    meta: {
+      guestOnly: true,
+    },
+  },
+  {
+    path: '/forgot_password',
+    name: 'forgot_password',
+    component: ForgotPassword,
     meta: {
       guestOnly: true,
     },

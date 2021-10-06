@@ -4,7 +4,10 @@
       <AuthInput label="Full Name" v-model="full_name" :required="true" />
       <AuthInput label="Email" v-model="email" :required="true" :error="email_error" />
       <AuthInput label="Password" type="password" v-model="password" :required="true" :error="password_error" />
-      <a-button type="primary" html-type="submit" :loading="loading">Đăng ký</a-button>
+      <div class="auth-form-footer">
+        <a-button type="primary" html-type="submit" :loading="loading">Đăng ký</a-button>
+        <router-link to="/login">Đã có tài khoản?</router-link>
+      </div>
     </AuthForm>
   </div>
 </template>
