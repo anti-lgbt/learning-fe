@@ -109,9 +109,6 @@ class UserController extends GettersSetters {
     this.email = null;
     this.state = null;
     this.role = null;
-    if (router.currentRoute.path !== '/') {
-      router.push('/');
-    }
   }
 
   auth_success(full_name: string, email: string, state: UserState, role: UserRole) {
