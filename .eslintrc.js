@@ -35,5 +35,6 @@ module.exports = {
     'prefer-destructuring': 'off',
     'no-useless-return': 'off',
     'no-else-return': 'off',
+    'no-param-reassign': 'off',
   },
 };

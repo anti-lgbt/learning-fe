@@ -14,7 +14,7 @@
             DANH MỤC
           </router-link>
 
-          <router-link v-if="UserController.role == 'admin'" to="/admin/product_types" class="header-nav-item">
+          <router-link v-if="UserController.role == 'admin'" to="/admin/product_types" class="header-nav-item" :class="{ 'router-link-exact-active router-link-active': $route.path.includes('/admin/') }">
             QUẢN TRỊ
           </router-link>
 

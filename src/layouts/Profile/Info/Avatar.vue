@@ -34,7 +34,7 @@ function getBase64(img: Blob, callback: (data: string) => void) {
 export default class Avatar extends Vue {
   imageUrl = '';
   loading = false;
-  files= Array<File>();
+  files = Array<File>();
   avatar_hover = false;
 
   get avatar() {
@@ -69,7 +69,6 @@ export default class Avatar extends Vue {
         description: '',
       });
     } catch (error) {
-      console.log(error);
       return error;
     } finally {
       this.loading = false;
