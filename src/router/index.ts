@@ -81,6 +81,10 @@ const routes: Array<RouteConfig> = [
         path: 'stats',
         component: () => import('@/views/Admin/Stats.vue'),
       },
+      {
+        path: 'statistics',
+        component: () => import('@/views/Admin/Statistics.vue'),
+      },
     ],
     meta: {
       requireAuth: true,

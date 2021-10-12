@@ -10,7 +10,7 @@
       <router-link to="/admin/users" class="menu-item">
         Khách Hàng
       </router-link>
-      <router-link to="/admin/stats" class="menu-item">
+      <router-link to="/admin/statistics" class="menu-item">
         Thống Kê
       </router-link>
     </Menu>
