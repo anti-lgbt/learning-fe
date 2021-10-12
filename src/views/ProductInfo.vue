@@ -8,11 +8,24 @@
       </div>
       <div class="product-info-details">
         <div class="product-info-details-title">{{ name }}</div>
-        <div class="product-info-details-price">{{ price }} đ</div>
+        <div class="product-info-details-price">
+          {{ default_price }} đ <span v-if="product" class="discount-price">{{ price }} đ</span>
+        </div>
         <div class="product-info-details-stock-left">
           Tình trạng: <span>{{ stock_left > 0 ? "Còn hàng" : "Hết hàng" }}</span>
         </div>
+        <div class="product-info-details-view-count">
+          Lượt xem: <span>{{ view_count }}</span>
+        </div>
         <button class="product-info-button" :disabled="stock_left == 0">THÊM VÀO GIỎ</button>
+        <div class="product-info-description">
+          <div class="product-info-description-title">
+            Mô tả:
+          </div>
+          <div class="product-info-description-content">
+            {{ description }}
+          </div>
+        </div>
       </div>
     </div>
 
@@ -85,7 +98,11 @@ export default class ProductInfo extends Vue {
   }
 
   get price() {
-    return Number(this.product?.price || '0.0').toLocaleString();
+    return (Number(this.product?.price) * (1 - Number(this.product?.discount_percentage) / 100)).toLocaleString();
+  }
+
+  get default_price() {
+    return (Number(this.product?.price)).toLocaleString();
   }
 
   get name() {
@@ -94,6 +111,14 @@ export default class ProductInfo extends Vue {
 
   get stock_left() {
     return this.product?.stock_left || 0;
+  }
+
+  get view_count() {
+    return this.product?.view_count || 0;
+  }
+
+  get description() {
+    return this.product?.description;
   }
 
   async mounted() {
@@ -168,6 +193,20 @@ export default class ProductInfo extends Vue {
     }
   }
 
+  &-description {
+    margin-top: 24px;
+
+    &-title {
+      font-size: 24px;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+
+    &-content {
+      font-size: 16px;
+    }
+  }
+
   &-comment {
     margin-top: 50px;
     margin-bottom: 20px;
@@ -218,11 +257,19 @@ export default class ProductInfo extends Vue {
       color: #a0122b;
       font-size: 26px;
       font-weight: 700;
-      display: inline-block;
+      display: flex;
       margin-bottom: 8px;
+      align-items: center;
+
+      .discount-price {
+        margin-left: 12px;
+        font-size: 18px;
+        color: #7c8188;
+        text-decoration: line-through;
+      }
     }
 
-    &-stock-left {
+    &-stock-left, &-view-count {
       margin-bottom: 12px;
       font-size: 16px;
 

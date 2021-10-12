@@ -10,8 +10,8 @@
       <router-link :to="`/product-info/${product.id}`" class="product-item-name">
         {{ product.name }}
       </router-link>
-      <div class="product-item-price">
-        {{ price }} đ
+      <div :class="['product-item-price', { 'has-discount': Number(product.discount_percentage) > 0 }]">
+        {{ price }} đ <span v-if="Number(product.discount_percentage) > 0" class="default-price">{{ default_price }} đ</span>
       </div>
     </div>
   </div>
@@ -25,7 +25,11 @@ export default class ProductItem extends Vue {
   @Prop() product!: Product;
 
   get price() {
-    return Number(this.product.price).toLocaleString();
+    return (Number(this.product.price) * (1 - Number(this.product.discount_percentage) / 100)).toLocaleString();
+  }
+
+  get default_price() {
+    return (Number(this.product.price)).toLocaleString();
   }
 }
 </script>
@@ -80,8 +84,17 @@ export default class ProductItem extends Vue {
   }
 
   &-price {
+    display: flex;
     font-size: 22px;
     font-weight: 700;
+    align-items: center;
+
+    .default-price {
+      margin-left: 8px;
+      font-size: 14px;
+      color: #b7b9bc;
+      text-decoration: line-through;
+    }
   }
 }
 </style>
