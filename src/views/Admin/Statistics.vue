@@ -145,11 +145,6 @@ export default class AdminStatistics extends Vue {
           data: this.comment_statistics,
         },
       ],
-      tooltip: {
-        headerFormat: '<span style="font-size: 10px">{point.y:%Y-%m-%d}</span><br/>',
-        xDateFormat: '%Y-%m-%d',
-        shared: true,
-      },
       responsive: {
         rules: [
           {
@@ -191,7 +186,7 @@ export default class AdminStatistics extends Vue {
     try {
       const { data } = await new ApiClient().get('admin/statistic/comments');
       this.comment_statistics = data.map((item: any) => {
-        return { x: new Date(item.release_date), y: item.count };
+        return { x: new Date(item.release_date).getTime(), y: item.count };
       });
     } catch (error) {
       return error;
