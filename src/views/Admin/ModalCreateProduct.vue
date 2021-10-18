@@ -92,8 +92,8 @@ export default class ModalCreateProduct extends Vue {
     form.set('name', this.name);
     form.set('description', this.description);
     form.set('price', this.price);
-    form.set('discount_percentage', this.discount_percentage);
-    form.set('special', this.special as never);
+    form.set('discount_percentage', this.discount_percentage || '0');
+    form.set('special', this.special as never || false);
     form.set('stock_left', this.stock_left as never);
     form.set('image', this.image as File);
 
